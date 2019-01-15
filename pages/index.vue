@@ -2,7 +2,7 @@
     <section class="container">
         <div>
             <h1 class="title">
-                dnd5-tool
+                dnd5-tool!
             </h1>
             <h2 class="subtitle">
                 A tool for dnd5
@@ -12,6 +12,10 @@
 </template>
 
 <script>
+
+    // const BelowFold = () => import(
+    //      webpackChunkName: "below-fold"  './BelowFold.vue'
+    // )
     export default {
         data() {
             return {
