@@ -7,10 +7,15 @@
 export default {
     name: 'Spells',
     data() {
-        return {
-        }
+        return {}
+    },
+    mounted() {
+        window.search = this.search
     },
     methods: {
+        search(phrase) {
+            this.$store.dispatch('spells/search', { str: phrase, filters: null })
+        },
     },
 }
 </script>
