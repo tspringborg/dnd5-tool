@@ -7,14 +7,35 @@ const satisfiesFilters = (item, filters) => {
     return true
 }
 
+const flattenEntries = (obj) => {
+    if (_.has(obj, 'entries')) {
+        return flattenEntries(obj.entries)
+    } else if (_.isArray(obj)) {
+        return _.map(obj, (item) => {
+            if (_.isString(item)) {
+                return item
+            }
+            return flattenEntries(item)
+        })
+    }
+    return obj
+}
+
 export default {
     state: () => {
+        const list = [].concat(
+            spells_php.spell,
+            spells_scag.spell,
+            spells_xge.spell,
+        )
+        _.each(list, (item) => {
+            // console.log(item)
+            const entries = flattenEntries(item)
+            const entriesHigherLevel = flattenEntries(item.entriesHigherLevel || [])
+            item.flattenedEntries = _.flatMap([].concat(entries, entriesHigherLevel))
+        })
         return {
-            list: [].concat(
-                spells_php.spell,
-                spells_scag.spell,
-                spells_xge.spell,
-            ),
+            list,
         }
     },
     actions: {
@@ -47,7 +68,7 @@ export default {
                     })
                 })
                 .value()
-            console.log(result)
+            // console.log(result)
             return result
         },
     },
