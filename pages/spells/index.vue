@@ -1,8 +1,17 @@
 <template>
     <div>
         <div>{{ list.length }}</div>
+        <table>
+            <th
+                v-for="(name, index) in ['name']"
+                :key="index"
+                @click="sortBy = name"
+            >
+                {{ name }}
+            </th>
+        </table>
         <div v-for="(spell, index) in list" :key="index">
-            <nuxt-link :to="spell.name">
+            <nuxt-link :to="`spells/${spell.name}`">
                 <h3>{{ spell.name }}</h3>
             </nuxt-link>
         </div>
@@ -16,7 +25,9 @@ import Fuse from 'fuse.js'
 export default {
     name: 'Spells',
     data() {
-        return {}
+        return {
+            sortBy: null,
+        }
     },
     computed: {
         list() {
