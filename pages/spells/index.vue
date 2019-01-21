@@ -1,5 +1,12 @@
 <template>
-    <div>{{ $store.state.spells.list.length }}</div>
+    <div>
+        <div>{{ list.length }}</div>
+        <div v-for="(spell, index) in list" :key="index">
+            <nuxt-link :to="spell.name">
+                <h3>{{ spell.name }}</h3>
+            </nuxt-link>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -11,29 +18,22 @@ export default {
     data() {
         return {}
     },
+    computed: {
+        list() {
+            return this.$store.state.spells.list
+        },
+    },
     mounted() {
         window.search = this.search
     },
     methods: {
         search(phrase) {
-            const options = {
-                shouldSort: true,
-                threshold: 0.6,
-                location: 0,
-                distance: 100,
-                maxPatternLength: 32,
-                minMatchCharLength: 1,
-                includeMatches: true,
-                includeScore: true,
-                keys: [
-                    'name',
-                    'flattenedEntries',
-                ],
+            const payload = {
+                str: phrase,
+                filters: null,
             }
-            const list = this.$store.state.spells.list
-            const fuse = new Fuse(list, options)
-            return fuse.search(phrase)
-            // this.$store.dispatch('spells/search', { str: phrase, filters: null })
+            return this.$store.dispatch('spells/search', payload)
+
         },
     },
 }

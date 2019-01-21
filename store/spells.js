@@ -2,6 +2,7 @@ import spells_php from '@/assets/spells-php.json'
 import spells_scag from '@/assets/spells-scag.json'
 import spells_xge from '@/assets/spells-xge.json'
 import _ from 'lodash'
+import Fuse from 'fuse.js'
 
 const satisfiesFilters = (item, filters) => {
     return true
@@ -34,42 +35,43 @@ export default {
             const entriesHigherLevel = flattenEntries(item.entriesHigherLevel || [])
             item.flattenedEntries = _.flatMap([].concat(entries, entriesHigherLevel))
         })
+
         return {
             list,
+            searchOptions: {
+                shouldSort: true,
+                threshold: 0.6,
+                location: 0,
+                distance: 100,
+                maxPatternLength: 32,
+                minMatchCharLength: 1,
+                // includeMatches: true,
+                // includeScore: true,
+                keys: [
+                    'name',
+                    'flattenedEntries',
+                ],
+            },
         }
+    },
+    getters: {
+        // search: (state) => (phrase) => {
+        //     const list = state.list
+        //     const options = state.searchOptions
+        //     const fuse = new Fuse(list, options)
+        //     const result = fuse.search(str)
+        //     return result
+        // }
     },
     actions: {
         search(context, { str, filters }) {
-            let result = _
-                .chain(context.state.list)
-                .filter((value, index) => {
-                    console.log(value)
-                    if (!satisfiesFilters(value, filters)) {
-                        return false
-                    }
-                    if (value.name.indexOf(str) !== -1) {
-                        return true
-                    }
-                    _.each(value.entries, (entry, index) => {
-                        let text = entry
-                        if (_.isArray(entry)) {
-                            text = entry.join('. ')
-                        }
-                        if (_.isObject(entry)) {
-                            if (_.has(entry, 'entries')) {
-                                text = entry.entries.join('. ')
-                            } else {
-                                text = ''
-                            }
-                        }
-                        if (text.indexOf(str) !== -1) {
-                            return true
-                        }
-                    })
-                })
-                .value()
-            // console.log(result)
-            return result
+            return new Promise((resolve, reject) => {
+                const list = context.state.list
+                const options = context.state.searchOptions
+                const fuse = new Fuse(list, options)
+                const result = fuse.search(str)
+                resolve(result)
+            })
         },
     },
 }
