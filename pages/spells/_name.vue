@@ -1,14 +1,22 @@
 <template>
     <div>
         <h1>{{ spell.name }}</h1>
+        <Entries :data="spell.entries"/>
+        <Entries
+            :data="spell.entriesHigherLevel"
+        />
     </div>
 </template>
 
 <script>
     import _ from 'lodash'
+    import Entries from '@/components/entries/Entries'
 
     export default {
         name: 'Name',
+        components: {
+            Entries,
+        },
         data() {
             return {
             }

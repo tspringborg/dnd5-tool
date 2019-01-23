@@ -11,7 +11,9 @@
             </th>
         </table>
         <div v-for="(spell, index) in list" :key="index">
-            <nuxt-link :to="`spells/${spell.name}`">
+            <nuxt-link
+                :to="`spells/${encodeURIComponent(spell.name)}`"
+            >
                 <h3>{{ spell.name }}</h3>
             </nuxt-link>
         </div>
