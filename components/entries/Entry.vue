@@ -18,6 +18,9 @@
             <template v-else-if="data.type === 'table'">
                 <EntryTable :data="data"/>
             </template>
+            <template v-else-if="data.type === 'list'">
+                <EntryList :data="data.items"/>
+            </template>
         </template>
     </div>
 </template>
@@ -25,11 +28,13 @@
 <script>
     import _ from 'lodash'
     import EntryTable from './EntryTable'
+    import EntryList from './EntryList'
 
     export default {
         name: 'Entry',
         components: {
             EntryTable,
+            EntryList,
         },
         props: {
             data: {

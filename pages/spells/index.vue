@@ -4,16 +4,23 @@
         <VueGoodTable
             :columns="tableColumns"
             :rows="tableRows"
-        />
-        <div
-            v-for="(spell, index) in list"
-            :key="index">
-            <nuxt-link
-                :to="`spells/${encodeURIComponent(spell.name)}`"
+        >
+            <template
+                slot="table-row"
+                slot-scope="props"
             >
-                <h3>{{ spell.name }}</h3>
-            </nuxt-link>
-        </div>
+                <span v-if="props.column.field == 'name'">
+                    <nuxt-link
+                        :to="`spells/${encodeURIComponent(props.formattedRow[props.column.field])}`"
+                    >
+                        {{ props.formattedRow[props.column.field] }}
+                    </nuxt-link>
+                </span>
+                <span v-else>
+                    {{ props.formattedRow[props.column.field] }}
+                </span>
+            </template>
+        </VueGoodTable>
     </div>
 </template>
 
@@ -66,7 +73,7 @@ export default {
                     source: item.source + '(page '+item.page + ')',
                     classlist: _.map(item.classes.fromClassList, (c) => {
                         return c.name
-                    }),
+                    }).join(', '),
                 }
             })
         },

@@ -54,6 +54,7 @@ module.exports = {
     ** Build configuration
     */
     build: {
+        // vendor: ['gsap'],
         /*
         ** You can extend webpack config here
         */
