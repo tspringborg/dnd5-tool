@@ -4,6 +4,7 @@
         <VueGoodTable
             :columns="tableColumns"
             :rows="tableRows"
+            :sort-options="tableSortOptions"
         >
             <template
                 slot="table-row"
@@ -76,6 +77,15 @@ export default {
                     }).join(', '),
                 }
             })
+        },
+        tableSortOptions() {
+            return {
+                enabled: true,
+                initialSortBy: {
+                    field: 'level',
+                    type: 'asc',
+                },
+            }
         },
     },
     mounted() {

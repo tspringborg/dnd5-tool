@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div>{{ prettyString }}</div>
 </template>
 
 <script>
@@ -14,6 +14,24 @@
             },
         },
         computed: {
+            prettyString() {
+                let str = ''
+                let sep = ''
+                _.each(this.data, (value, key) => {
+                    if (_.isBoolean(value)) {
+                        if (value) str += sep+key
+                    } else {
+                        str += sep+key
+                        if (_.isString(value)) {
+                            str += `(${value})`
+                        } else {
+                            str += `(${value.text})`
+                        }
+                    }
+                    sep = ', '
+                })
+                return str
+            },
         },
     }
 </script>

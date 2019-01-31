@@ -1,6 +1,12 @@
 <template>
     <div>
         <h1>{{ spell.name }}</h1>
+        <p>time: {{ spell.time }}</p>
+        <p>duration: {{ spell.duration }}</p>
+        <p>range: {{ spell.range }}</p>
+        <p>level: {{ spell.level }}</p>
+
+        <SpellComponents :data="spell.components"/>
         <Entries :data="spell.entries"/>
         <Entries
             :data="spell.entriesHigherLevel"
@@ -11,11 +17,13 @@
 <script>
     import _ from 'lodash'
     import Entries from '@/components/entries/Entries'
+    import SpellComponents from '@/components/SpellComponents'
 
     export default {
         name: 'Name',
         components: {
             Entries,
+            SpellComponents,
         },
         data() {
             return {
