@@ -38,6 +38,51 @@ export default {
 
         return {
             list,
+            columns: [
+                {
+                    label: 'Level',
+                    field: 'level',
+                    type: 'number',
+                },
+                {
+                    label: 'Name',
+                    field: 'name',
+                },
+                {
+                    label: 'Classes',
+                    field: 'classlist',
+                    type: 'array',
+                },
+                {
+                    label: 'Source',
+                    field: 'source',
+                },
+            ],
+            filterOptions: {
+
+            },
+            sortOptions: {
+                enabled: true,
+                initialSortBy: {
+                    field: 'level',
+                    type: 'asc',
+                },
+            },
+            paginationOptions: {
+                enabled: true,
+                mode: 'records',
+                perPage: 50,
+                position: 'top',
+                perPageDropdown: [25, 50, 100],
+                dropdownAllowAll: true,
+                setCurrentPage: 1,
+                nextLabel: 'next',
+                prevLabel: 'prev',
+                rowsPerPageLabel: 'Rows per page',
+                ofLabel: 'of',
+                pageLabel: 'page', // for 'pages' mode
+                allLabel: 'All',
+            },
             searchOptions: {
                 shouldSort: true,
                 threshold: 0.6,
@@ -54,7 +99,15 @@ export default {
             },
         }
     },
+
+    mutations: {
+    },
     getters: {
+        tableOptions: state => {
+            return {
+                columns: state.columns,
+            }
+        },
         // search: (state) => (phrase) => {
         //     const list = state.list
         //     const options = state.searchOptions

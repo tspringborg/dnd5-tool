@@ -28,6 +28,7 @@ module.exports = {
     */
     css: [
         //ex: '@/assets/styles/app.scss',
+       'vue-good-table/dist/vue-good-table.css'
     ],
 
     /*

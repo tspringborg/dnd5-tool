@@ -2,9 +2,9 @@
     <div>
         <div>{{ list.length }}</div>
         <VueGoodTable
-            :columns="tableColumns"
+            v-bind="tableOptions"
             :rows="tableRows"
-            :sort-options="tableSortOptions"
+            @on-page-change="(e) => {currentPage = e.currentPage}"
         >
             <template
                 slot="table-row"
@@ -45,27 +45,10 @@ export default {
         list() {
             return this.$store.state.spells.list
         },
-        tableColumns() {
-            return [
-                {
-                    label: 'Level',
-                    field: 'level',
-                    type: 'number',
-                },
-                {
-                    label: 'Name',
-                    field: 'name',
-                },
-                {
-                    label: 'Classes',
-                    field: 'classlist',
-                    type: 'array',
-                },
-                {
-                    label: 'Source',
-                    field: 'source',
-                },
-            ]
+        tableOptions() {
+            return {
+                ...this.$store.getters['spells/tableOptions'],
+            }
         },
         tableRows() {
             return _.map(this.list, (item, index) => {
@@ -79,13 +62,10 @@ export default {
             })
         },
         tableSortOptions() {
-            return {
-                enabled: true,
-                initialSortBy: {
-                    field: 'level',
-                    type: 'asc',
-                },
-            }
+            return this.$store.state.spells.sortOptions
+        },
+        tablePaginationOptions() {
+            return this.$store.state.spells.paginationOptions
         },
     },
     mounted() {
