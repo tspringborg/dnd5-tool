@@ -1,10 +1,15 @@
 <template>
     <div>
-        <div>{{ list.length }}</div>
         <VueGoodTable
             v-bind="tableOptions"
             :rows="tableRows"
-            @on-page-change="(e) => {currentPage = e.currentPage}"
+            :search-options="{
+                enabled: true,
+                externalQuery: searchQuery
+            }"
+            @on-page-change="(e) => {$store.commit('spells/set_currentPage', e.currentPage)}"
+            @on-per-page-change="(e) => {$store.commit('spells/set_perPage', e.currentPerPage)}"
+            @on-sort-change="onSortChange"
         >
             <template
                 slot="table-row"
@@ -39,6 +44,7 @@ export default {
     data() {
         return {
             sortBy: null,
+            searchQuery: '',
         }
     },
     computed: {
@@ -47,7 +53,63 @@ export default {
         },
         tableOptions() {
             return {
-                ...this.$store.getters['spells/tableOptions'],
+                //columns: [].concat(this.$store.state.spells.columns),
+                'fixed-header': true,
+                columns: [
+                    {
+                        label: 'Level',
+                        field: 'level',
+                        type: 'number',
+                    },
+                    {
+                        label: 'Name',
+                        field: 'name',
+                    },
+                    {
+                        label: 'Classes',
+                        field: 'classlist',
+                        type: 'array',
+                    },
+                    {
+                        label: 'Source',
+                        field: 'source',
+                    },
+                ],
+                
+                filterOptions: {
+
+                },
+                sortOptions: {
+                    enabled: true,
+                    initialSortBy: {
+                        field: this.$store.state.spells.sort,
+                        type: this.$store.state.spells.sortType,
+                    },
+                },
+                paginationOptions: {
+                    enabled: true,
+                    mode: 'records',
+                    perPage: this.$store.state.spells.perPage,
+                    position: 'top',
+                    perPageDropdown: [25, 50, 100],
+                    dropdownAllowAll: true,
+                    setCurrentPage: this.$store.state.spells.currentPage,
+                    nextLabel: 'next',
+                    prevLabel: 'prev',
+                    rowsPerPageLabel: 'Rows per page',
+                    ofLabel: 'of',
+                    pageLabel: 'page', // for 'pages' mode
+                    allLabel: 'All',
+                },
+                /*
+                'search-options': {
+                    enabled: true,
+                    trigger: 'enter',
+                    skipDiacritics: true,
+                    //searchFn: mySearchFn,
+                    placeholder: 'Search spells',
+                    //externalQuery: this.searchQuery,
+                },*/
             }
         },
         tableRows() {
@@ -72,6 +134,9 @@ export default {
         window.search = this.search
     },
     methods: {
+        onSortChange(p) {
+            this.$store.commit('spells/set_sort', p[0])
+        },
         search(phrase) {
             const payload = {
                 str: phrase,

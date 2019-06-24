@@ -37,6 +37,11 @@ export default {
         })
 
         return {
+            sort: 'level',
+            sortType: 'asc',
+            currentPage: 1,
+            perPage: 50,
+            searchQuery: '',
             list,
             columns: [
                 {
@@ -61,28 +66,8 @@ export default {
             filterOptions: {
 
             },
-            sortOptions: {
-                enabled: true,
-                initialSortBy: {
-                    field: 'level',
-                    type: 'asc',
-                },
-            },
-            paginationOptions: {
-                enabled: true,
-                mode: 'records',
-                perPage: 50,
-                position: 'top',
-                perPageDropdown: [25, 50, 100],
-                dropdownAllowAll: true,
-                setCurrentPage: 1,
-                nextLabel: 'next',
-                prevLabel: 'prev',
-                rowsPerPageLabel: 'Rows per page',
-                ofLabel: 'of',
-                pageLabel: 'page', // for 'pages' mode
-                allLabel: 'All',
-            },
+            
+            
             searchOptions: {
                 shouldSort: true,
                 threshold: 0.6,
@@ -101,6 +86,19 @@ export default {
     },
 
     mutations: {
+        set_currentPage(state, n) {
+            state.currentPage = n
+        },
+        set_perPage(state, n) {
+            state.perPage = n
+        },
+        set_sort(state, value) {
+            state.sort = value.field
+            state.sortType = value.type
+        },
+        set_searchQuery(state, value) {
+            state.searchQuery = value
+        },
     },
     getters: {
         tableOptions: state => {
