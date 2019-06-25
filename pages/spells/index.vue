@@ -1,5 +1,9 @@
 <template>
     <div>
+        <input
+            v-model="searchQuery"
+            type="text"
+        >
         <VueGoodTable
             v-bind="tableOptions"
             :rows="tableRows"
@@ -35,6 +39,7 @@
 import Fuse from 'fuse.js'
 import _ from 'lodash'
 import { VueGoodTable } from 'vue-good-table'
+import { bindToStateComputed } from 'assets/utils'
 
 export default {
     name: 'Spells',
@@ -44,10 +49,10 @@ export default {
     data() {
         return {
             sortBy: null,
-            searchQuery: '',
         }
     },
     computed: {
+        searchQuery: bindToStateComputed('spells.searchQuery', 'spells/set_searchQuery'),
         list() {
             return this.$store.state.spells.list
         },
