@@ -26,7 +26,7 @@ export default {
             bestiary_mm,
         )
         _.each(list, (item) => {
-            console.log(item)
+            //console.log(item)
             /*
             const entries = flattenEntries(item)
             const entriesHigherLevel = flattenEntries(item.entriesHigherLevel || [])
