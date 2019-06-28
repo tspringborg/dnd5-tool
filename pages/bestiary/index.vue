@@ -1,51 +1,23 @@
 <template>
     <div>
-        <input
-            v-model="searchQuery"
-            type="text"
-        >
-        <VueGoodTable
-            v-bind="tableOptions"
-            :rows="tableRows"
-            :search-options="{
-                enabled: true,
-                externalQuery: searchQuery
-            }"
-            @on-page-change="(e) => {$store.commit('bestiary/set_currentPage', e.currentPage)}"
-            @on-per-page-change="(e) => {$store.commit('bestiary/set_perPage', e.currentPerPage)}"
-            @on-sort-change="onSortChange"
-        >
-            <template
-                slot="table-row"
-                slot-scope="props"
-            >
-                <span v-if="props.column.field == 'name'">
-                    <nuxt-link
-                        :to="`bestiary/${encodeURIComponent(props.formattedRow[props.column.field])}`"
-                    >
-                        {{ props.formattedRow[props.column.field] }}
-                    </nuxt-link>
-                </span>
-                <span v-else>
-                    {{ props.formattedRow[props.column.field] }}
-                </span>
-            </template>
-        </VueGoodTable>
-        
+        <table-of-contents :data="list"/>
     </div>
 </template>
 
 <script>
 
+import Creature from '@/models/Creature'
 import Fuse from 'fuse.js'
 import _ from 'lodash'
 import { VueGoodTable } from 'vue-good-table'
 import { bindToStateComputed } from 'assets/utils'
+import TableOfContents from '@/components/compendium/TableOfContents'
 
 export default {
     name: 'Bestiary',
     components: {
         VueGoodTable,
+        TableOfContents,
     },
     data() {
         return {
@@ -131,6 +103,11 @@ export default {
     },
     mounted() {
         window.search = this.search
+        const data = this.list[0]
+        console.log(data)
+        const creature = new Creature(this.list[0])
+        console.log(creature)
+        
     },
     methods: {
         onSortChange(p) {

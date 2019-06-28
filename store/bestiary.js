@@ -1,7 +1,7 @@
-import bestiary_mm from '@/assets/bestiary-mm.json'
+import bestiary_mm from '@/assets/data/bestiary-mm.json'
 import _ from 'lodash'
 import Fuse from 'fuse.js'
-
+import createStore from '@/assets/compendium/createStore'
 const satisfiesFilters = (item, filters) => {
     return true
 }
@@ -20,107 +20,10 @@ const flattenEntries = (obj) => {
     return obj
 }
 
-export default {
-    state: () => {
-        const list = [].concat(
-            bestiary_mm,
-        )
-        _.each(list, (item) => {
-            //console.log(item)
-            /*
-            const entries = flattenEntries(item)
-            const entriesHigherLevel = flattenEntries(item.entriesHigherLevel || [])
-            item.flattenedEntries = _.flatMap([].concat(entries, entriesHigherLevel))
-            */
-        })
+const list = [].concat(
+    bestiary_mm,
+)
 
-        return {
-            sort: 'level',
-            sortType: 'asc',
-            currentPage: 1,
-            perPage: 50,
-            searchQuery: '',
-            list,
-            columns: [
-                {
-                    label: 'Level',
-                    field: 'level',
-                    type: 'number',
-                },
-                {
-                    label: 'Name',
-                    field: 'name',
-                },
-                {
-                    label: 'Classes',
-                    field: 'classlist',
-                    type: 'array',
-                },
-                {
-                    label: 'Source',
-                    field: 'source',
-                },
-            ],
-            filterOptions: {
+const store = createStore(list)
 
-            },
-            
-            
-            searchOptions: {
-                shouldSort: true,
-                threshold: 0.6,
-                location: 0,
-                distance: 100,
-                maxPatternLength: 32,
-                minMatchCharLength: 1,
-                // includeMatches: true,
-                // includeScore: true,
-                keys: [
-                    'name',
-                    'flattenedEntries',
-                ],
-            },
-        }
-    },
-
-    mutations: {
-        set_currentPage(state, n) {
-            state.currentPage = n
-        },
-        set_perPage(state, n) {
-            state.perPage = n
-        },
-        set_sort(state, value) {
-            state.sort = value.field
-            state.sortType = value.type
-        },
-        set_searchQuery(state, value) {
-            state.searchQuery = value
-        },
-    },
-    getters: {
-        tableOptions: state => {
-            return {
-                columns: state.columns,
-            }
-        },
-        // search: (state) => (phrase) => {
-        //     const list = state.list
-        //     const options = state.searchOptions
-        //     const fuse = new Fuse(list, options)
-        //     const result = fuse.search(str)
-        //     return result
-        // }
-    },
-    actions: {
-        search(context, { str, filters }) {
-            return new Promise((resolve, reject) => {
-                const list = context.state.list
-                const options = context.state.searchOptions
-                const fuse = new Fuse(list, options)
-                const result = fuse.search(str)
-                resolve(result)
-            })
-        },
-    },
-}
+export default store

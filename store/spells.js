@@ -1,6 +1,6 @@
-import spells_php from '@/assets/spells-php.json'
-import spells_scag from '@/assets/spells-scag.json'
-import spells_xge from '@/assets/spells-xge.json'
+import spells_php from '@/assets/data/spells-php.json'
+import spells_scag from '@/assets/data/spells-scag.json'
+import spells_xge from '@/assets/data/spells-xge.json'
 import _ from 'lodash'
 import Fuse from 'fuse.js'
 
