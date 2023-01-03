@@ -18,7 +18,7 @@
     "cross-env": "^5.2.0",
     "fuse.js": "^3.3.0",
     "gsap": "^2.0.2",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.15.8",
     "vue-good-table": "^2.16.0"
   },
   "devDependencies": {
